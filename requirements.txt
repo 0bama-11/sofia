@@ -1,4 +1,8 @@
-kivy==2.3.0
+kivy>=2.3.0
 pillow>=10.0.0
 plyer>=2.1.0
 requests>=2.31.0
+
+# ML — entrenamiento e inferencia
+torch>=2.0.0
+torchvision>=0.15.0

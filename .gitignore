@@ -20,3 +20,9 @@ bin/
 *.aab
 *.spec
 .buildozer/
+
+# ML — datos pesados y modelos
+ml/data/
+ml/models/*.pt
+ml/models/export/
+ml/logs/

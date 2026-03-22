@@ -1,7 +1,7 @@
 from kivy.uix.screenmanager import Screen
 from kivy.properties import (StringProperty, NumericProperty, ListProperty,
                               BooleanProperty)
-from app.services.inference import predict_food
+from app.services.inference import predict_food, is_model_loaded
 from app.nutrition.food_table import estimate_nutrition, get_food_classes
 from app.database.db import save_meal
 
@@ -12,7 +12,9 @@ class ResultScreen(Screen):
     # Predicción
     predictions = ListProperty([])
     selected_class = StringProperty("")
+    display_name = StringProperty("")
     confidence_text = StringProperty("")
+    model_status = StringProperty("")
 
     # Porción
     portion = StringProperty("mediana")
@@ -32,19 +34,22 @@ class ResultScreen(Screen):
         self._run_prediction()
 
     def _run_prediction(self):
+        self.model_status = "IA" if is_model_loaded() else "Simulado"
         results = predict_food(self.image_path)
         self.predictions = results
         if results:
-            self.selected_class = results[0]["food_class"]
-            conf = results[0]["confidence"]
-            self.confidence_text = f"Confianza: {int(conf * 100)}%"
+            self._select(results[0])
         self._recalculate()
+
+    def _select(self, pred):
+        self.selected_class = pred["food_class"]
+        self.display_name = pred.get("display_name", pred["food_class"].title())
+        conf = pred["confidence"]
+        self.confidence_text = f"Confianza: {int(conf * 100)}%"
 
     def select_prediction(self, index):
         if 0 <= index < len(self.predictions):
-            self.selected_class = self.predictions[index]["food_class"]
-            conf = self.predictions[index]["confidence"]
-            self.confidence_text = f"Confianza: {int(conf * 100)}%"
+            self._select(self.predictions[index])
             self._recalculate()
 
     def set_portion(self, portion):
