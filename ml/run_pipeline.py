@@ -8,6 +8,7 @@ Uso:
     python -m ml.run_pipeline
     python -m ml.run_pipeline --epochs 15 --batch-size 64
     python -m ml.run_pipeline --skip-download
+    python -m ml.run_pipeline --resume auto --epochs 10
 """
 
 import argparse
@@ -22,6 +23,9 @@ def main():
                         help="Saltar descarga si ya tienes el dataset")
     parser.add_argument("--skip-train", action="store_true",
                         help="Saltar entrenamiento (solo exportar)")
+    parser.add_argument("--resume", type=str, default=None,
+                        help='Continuar entrenamiento desde checkpoint. '
+                             'Usa "auto" para best_model.pt.')
     args = parser.parse_args()
 
     # ─── 1. Download ───
@@ -44,6 +48,7 @@ def main():
         train_args = argparse.Namespace(
             epochs=args.epochs,
             batch_size=args.batch_size,
+            resume=args.resume,
         )
         train(train_args)
         print()

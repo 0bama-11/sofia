@@ -203,6 +203,8 @@ def train(args):
     print(f"Modelo: {MODEL_NAME}")
     print(f"Épocas: {args.epochs}")
     print(f"Batch size: {args.batch_size}")
+    if args.resume:
+        print(f"Resumiendo desde: {args.resume}")
     print()
 
     # ─── Datos ───
@@ -238,11 +240,36 @@ def train(args):
     model = build_model(device)
     criterion = nn.CrossEntropyLoss()
 
-    # ─── Entrenamiento ───
+    # ─── Resumir desde checkpoint ───
+    start_epoch = 0
     best_val_acc = 0.0
     patience_counter = 0
 
-    for epoch in range(args.epochs):
+    if args.resume:
+        resume_path = args.resume
+        # Si pasan "auto", buscar best_model.pt automáticamente
+        if resume_path == "auto":
+            resume_path = os.path.join(MODELS_DIR, "best_model.pt")
+
+        if not os.path.exists(resume_path):
+            print(f"ERROR: No se encontró checkpoint en {resume_path}")
+            sys.exit(1)
+
+        checkpoint = torch.load(resume_path, map_location=device,
+                                weights_only=False)
+        model.load_state_dict(checkpoint["model_state_dict"])
+        start_epoch = checkpoint.get("epoch", 0) + 1
+        best_val_acc = checkpoint.get("val_acc", 0.0)
+        print(f"Checkpoint cargado: época {start_epoch}, "
+              f"val_acc={best_val_acc:.1f}%")
+        print(f"Continuando desde época {start_epoch + 1} "
+              f"hasta {start_epoch + args.epochs}")
+        print()
+
+    # ─── Entrenamiento ───
+    total_epochs = start_epoch + args.epochs
+
+    for epoch in range(start_epoch, total_epochs):
         t0 = time.time()
 
         # Estrategia de congelamiento
@@ -250,9 +277,12 @@ def train(args):
             freeze_backbone(model)
             phase = "HEAD ONLY"
         else:
-            if epoch == FREEZE_BACKBONE_EPOCHS:
+            if epoch == FREEZE_BACKBONE_EPOCHS or (args.resume and epoch == start_epoch and epoch >= FREEZE_BACKBONE_EPOCHS):
                 unfreeze_backbone(model)
-                print(f"\n>>> Backbone descongelado en época {epoch+1} <<<\n")
+                if epoch == FREEZE_BACKBONE_EPOCHS:
+                    print(f"\n>>> Backbone descongelado en época {epoch+1} <<<\n")
+                else:
+                    print(f"\n>>> Backbone descongelado (resume fine-tuning) <<<\n")
             phase = "FINE-TUNING"
 
         optimizer = build_optimizer(model, epoch)
@@ -272,7 +302,7 @@ def train(args):
         )
 
         elapsed = time.time() - t0
-        print(f"\nÉpoca {epoch+1}/{args.epochs} [{phase}] "
+        print(f"\nÉpoca {epoch+1}/{total_epochs} [{phase}] "
               f"({elapsed:.0f}s)")
         print(f"  Train — Loss: {train_loss:.4f} | Acc: {train_acc:.1f}%")
         print(f"  Val   — Loss: {val_loss:.4f} | "
@@ -307,7 +337,11 @@ def train(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Entrenar modelo Food-101")
-    parser.add_argument("--epochs", type=int, default=NUM_EPOCHS)
+    parser.add_argument("--epochs", type=int, default=NUM_EPOCHS,
+                        help="Número de épocas adicionales a entrenar")
     parser.add_argument("--batch-size", type=int, default=BATCH_SIZE)
+    parser.add_argument("--resume", type=str, default=None,
+                        help='Ruta al checkpoint para continuar entrenamiento. '
+                             'Usa "auto" para cargar best_model.pt automáticamente.')
     args = parser.parse_args()
     train(args)
