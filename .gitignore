@@ -26,3 +26,6 @@ ml/data/
 ml/models/*.pt
 ml/models/export/
 ml/logs/
+
+#secretos
+.env
