@@ -1,0 +1,368 @@
+#:import utils kivy.utils
+#:import dp kivy.metrics.dp
+#:import sp kivy.metrics.sp
+
+<ExerciseScreen>:
+    name: "exercise"
+
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex("#6A0DAD")
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 0
+
+        # HEADER
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: dp(60)
+            padding: [dp(12), dp(8), dp(18), dp(4)]
+
+            Button:
+                size_hint: None, None
+                size: dp(44), dp(44)
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                on_release: root.go_back()
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 0.15
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(10)]
+                Label:
+                    text: "<"
+                    font_size: sp(22)
+                    bold: True
+                    color: 1, 1, 1, 1
+                    pos: self.parent.pos
+                    size: self.parent.size
+                    halign: "center"
+                    valign: "middle"
+                    text_size: self.size
+
+            Label:
+                text: root.selected_exercise.capitalize()
+                font_size: sp(22)
+                bold: True
+                color: 1, 1, 1, 1
+                halign: "center"
+                text_size: self.size
+
+            Widget:
+                size_hint_x: None
+                width: dp(44)
+
+        # IMAGEN DEL EJERCICIO
+        AnchorLayout:
+            size_hint_y: None
+            height: dp(100)
+            anchor_x: "center"
+            anchor_y: "center"
+
+            Image:
+                source: "assets/" + root.selected_exercise + (".webp" if root.selected_exercise == "caminar" else ".png")
+                size_hint: None, None
+                size: dp(90), dp(90)
+                allow_stretch: True
+
+        # SELECTOR DE MODO
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: dp(44)
+            padding: [dp(20), 0, dp(20), 0]
+            spacing: dp(10)
+
+            Button:
+                text: "Libre"
+                font_size: sp(14)
+                bold: root.mode == "libre"
+                background_normal: ""
+                background_color: (1, 1, 1, 0.25) if root.mode == "libre" else (1, 1, 1, 0.08)
+                color: 1, 1, 1, 1
+                on_release: root.set_mode("libre")
+                canvas.before:
+                    Color:
+                        rgba: (1, 1, 1, 0.25) if root.mode == "libre" else (1, 1, 1, 0.08)
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(20)]
+
+            Button:
+                text: "Meta"
+                font_size: sp(14)
+                bold: root.mode == "meta"
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                color: 1, 1, 1, 1
+                on_release: root.set_mode("meta")
+                canvas.before:
+                    Color:
+                        rgba: (1, 1, 1, 0.25) if root.mode == "meta" else (1, 1, 1, 0.08)
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(20)]
+
+        # METAS DE TIEMPO (solo visible en modo meta)
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: dp(44) if root.mode == "meta" else dp(0)
+            opacity: 1 if root.mode == "meta" else 0
+            padding: [dp(16), 0, dp(16), 0]
+            spacing: dp(8)
+
+            Button:
+                text: "15 min"
+                font_size: sp(12)
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                color: 1, 1, 1, 0.8
+                on_release: root.set_goal(15)
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 0.12
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(16)]
+
+            Button:
+                text: "30 min"
+                font_size: sp(12)
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                color: 1, 1, 1, 0.8
+                on_release: root.set_goal(30)
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 0.12
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(16)]
+
+            Button:
+                text: "45 min"
+                font_size: sp(12)
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                color: 1, 1, 1, 0.8
+                on_release: root.set_goal(45)
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 0.12
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(16)]
+
+            Button:
+                text: "60 min"
+                font_size: sp(12)
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                color: 1, 1, 1, 0.8
+                on_release: root.set_goal(60)
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 0.12
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(16)]
+
+        Widget:
+            size_hint_y: None
+            height: dp(10)
+
+        # CRONOMETRO PRINCIPAL
+        AnchorLayout:
+            size_hint_y: None
+            height: dp(100)
+            anchor_x: "center"
+            anchor_y: "center"
+
+            Label:
+                text: root.timer_text
+                font_size: sp(54)
+                bold: True
+                color: 1, 1, 1, 1
+                halign: "center"
+                text_size: self.size
+
+        # RESTANTE EN MODO META
+        AnchorLayout:
+            size_hint_y: None
+            height: dp(30) if root.mode == "meta" else dp(0)
+            opacity: 1 if root.mode == "meta" else 0
+            anchor_x: "center"
+
+            Label:
+                text: "Restante: " + root.remaining_text
+                font_size: sp(15)
+                color: 1, 0.9, 0.4, 1
+                halign: "center"
+                text_size: self.size
+
+        # BARRA DE PROGRESO (modo meta)
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: None
+            height: dp(24) if root.mode == "meta" else dp(0)
+            opacity: 1 if root.mode == "meta" else 0
+            padding: [dp(24), 0, dp(24), 0]
+
+            Widget:
+                size_hint_y: None
+                height: dp(10)
+                canvas:
+                    Color:
+                        rgba: 1, 1, 1, 0.2
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(5)]
+                    Color:
+                        rgba: 1, 0.85, 0.3, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: min(root.elapsed_secs / max(root.goal_secs, 1), 1.0) * self.width, self.height
+                        radius: [dp(5)]
+
+        Widget:
+            size_hint_y: None
+            height: dp(16)
+
+        # STATS: calorias y distancia
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: dp(90)
+            padding: [dp(16), 0, dp(16), 0]
+            spacing: dp(12)
+
+            BoxLayout:
+                orientation: "vertical"
+                padding: dp(12)
+                canvas.before:
+                    Color:
+                        rgba: utils.get_color_from_hex("#4A0080CC")
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(14)]
+                Label:
+                    text: str(int(root.calories_burned))
+                    font_size: sp(30)
+                    bold: True
+                    color: 1, 0.85, 0.3, 1
+                    halign: "center"
+                    text_size: self.size
+                Label:
+                    text: "kcal quemadas"
+                    font_size: sp(11)
+                    color: 0.85, 0.75, 1, 1
+                    halign: "center"
+                    text_size: self.size
+
+            BoxLayout:
+                orientation: "vertical"
+                padding: dp(12)
+                canvas.before:
+                    Color:
+                        rgba: utils.get_color_from_hex("#3D0070CC")
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(14)]
+                Label:
+                    text: str(round(root.distance_km, 2))
+                    font_size: sp(30)
+                    bold: True
+                    color: 1, 1, 1, 1
+                    halign: "center"
+                    text_size: self.size
+                Label:
+                    text: "km recorridos"
+                    font_size: sp(11)
+                    color: 0.85, 0.75, 1, 1
+                    halign: "center"
+                    text_size: self.size
+
+        Widget:
+
+        # BOTONES PLAY/PAUSA Y RESET
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: dp(90)
+            padding: [dp(40), 0, dp(40), 0]
+            spacing: dp(24)
+
+            # Reset
+            Button:
+                size_hint: None, None
+                size: dp(60), dp(60)
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                on_release: root.reset_timer()
+                pos_hint: {"center_y": 0.5}
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 0.15
+                    Ellipse:
+                        pos: self.pos
+                        size: self.size
+                Label:
+                    text: "R"
+                    font_size: sp(20)
+                    bold: True
+                    color: 1, 1, 1, 0.8
+                    pos: self.parent.pos
+                    size: self.parent.size
+                    halign: "center"
+                    valign: "middle"
+                    text_size: self.size
+
+            # Play / Pausa
+            Button:
+                size_hint: None, None
+                size: dp(80), dp(80)
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                on_release: root.toggle_timer()
+                pos_hint: {"center_y": 0.5}
+                canvas.before:
+                    Color:
+                        rgba: utils.get_color_from_hex("#4A0080")
+                    Ellipse:
+                        pos: self.pos
+                        size: self.size
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    Triangle:
+                        points: [self.x + dp(30), self.y + dp(18), self.x + dp(30), self.y + dp(62), self.x + dp(64), self.y + dp(40)] if not root.is_running else [self.x + dp(22), self.y + dp(18), self.x + dp(22), self.y + dp(62), self.x + dp(22), self.y + dp(18)]
+                Label:
+                    text: "" if not root.is_running else "||"
+                    font_size: sp(24)
+                    bold: True
+                    color: 1, 1, 1, 1
+                    pos: self.parent.pos
+                    size: self.parent.size
+                    halign: "center"
+                    valign: "middle"
+                    text_size: self.size
+
+        Widget:
+            size_hint_y: None
+            height: dp(20)
