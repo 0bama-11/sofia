@@ -24,7 +24,7 @@
             padding: [dp(18), dp(10), dp(18), dp(4)]
 
             Label:
-                text: "NutriAI"
+                text: "Kaguar-ia"
                 font_size: sp(24)
                 bold: True
                 color: 1, 1, 1, 1
@@ -309,46 +309,102 @@
         BoxLayout:
             orientation: "horizontal"
             size_hint_y: None
-            height: dp(68)
-            padding: [0, dp(4), 0, 0]
+            height: dp(72)
+            padding: [0, 0, 0, 0]
             canvas.before:
                 Color:
-                    rgba: utils.get_color_from_hex("#1A001A")
+                    rgba: 0, 0, 0, 1
                 Rectangle:
                     pos: self.pos
                     size: self.size
 
-            Button:
-                text: "Podio"
-                font_size: sp(11)
-                background_normal: ""
-                background_color: 0, 0, 0, 0
-                color: 0.7, 0.7, 0.7, 1
+            # Podio con imagen jaguar
+            BoxLayout:
+                orientation: "vertical"
+                spacing: dp(2)
+                padding: [0, dp(4), 0, dp(4)]
+                Image:
+                    source: "assets/jaguar.png"
+                    size_hint_y: None
+                    height: dp(36)
+                    allow_stretch: True
+                    keep_ratio: True
+                Label:
+                    text: "Podio"
+                    font_size: sp(10)
+                    size_hint_y: None
+                    height: dp(14)
+                    color: 0.7, 0.7, 0.7, 1
+                    halign: "center"
+                    text_size: self.size
 
-            Button:
-                text: "Amigos"
-                font_size: sp(11)
-                background_normal: ""
-                background_color: 0, 0, 0, 0
-                color: 0.7, 0.7, 0.7, 1
+            # Amigos
+            BoxLayout:
+                orientation: "vertical"
+                spacing: dp(2)
+                padding: [0, dp(4), 0, dp(4)]
+                Widget:
+                    size_hint_y: None
+                    height: dp(36)
+                Label:
+                    text: "Amigos"
+                    font_size: sp(10)
+                    size_hint_y: None
+                    height: dp(14)
+                    color: 0.7, 0.7, 0.7, 1
+                    halign: "center"
+                    text_size: self.size
 
-            Button:
-                text: "Inicio"
-                font_size: sp(11)
-                background_normal: ""
-                background_color: 0, 0, 0, 0
-                color: 1, 1, 1, 1
+            # Inicio con imagen arbol
+            BoxLayout:
+                orientation: "vertical"
+                spacing: dp(2)
+                padding: [0, dp(4), 0, dp(4)]
+                Image:
+                    source: "assets/arbol.png"
+                    size_hint_y: None
+                    height: dp(36)
+                    allow_stretch: True
+                    keep_ratio: True
+                Label:
+                    text: "Inicio"
+                    font_size: sp(10)
+                    size_hint_y: None
+                    height: dp(14)
+                    color: 1, 1, 1, 1
+                    halign: "center"
+                    text_size: self.size
 
-            Button:
-                text: "Social"
-                font_size: sp(11)
-                background_normal: ""
-                background_color: 0, 0, 0, 0
-                color: 0.7, 0.7, 0.7, 1
+            # Social
+            BoxLayout:
+                orientation: "vertical"
+                spacing: dp(2)
+                padding: [0, dp(4), 0, dp(4)]
+                Widget:
+                    size_hint_y: None
+                    height: dp(36)
+                Label:
+                    text: "Social"
+                    font_size: sp(10)
+                    size_hint_y: None
+                    height: dp(14)
+                    color: 0.7, 0.7, 0.7, 1
+                    halign: "center"
+                    text_size: self.size
 
-            Button:
-                text: "Tienda"
-                font_size: sp(11)
-                background_normal: ""
-                background_color: 0, 0, 0, 0
-                color: 0.7, 0.7, 0.7, 1
+            # Tienda
+            BoxLayout:
+                orientation: "vertical"
+                spacing: dp(2)
+                padding: [0, dp(4), 0, dp(4)]
+                Widget:
+                    size_hint_y: None
+                    height: dp(36)
+                Label:
+                    text: "Tienda"
+                    font_size: sp(10)
+                    size_hint_y: None
+                    height: dp(14)
+                    color: 0.7, 0.7, 0.7, 1
+                    halign: "center"
+                    text_size: self.size

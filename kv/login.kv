@@ -1,0 +1,356 @@
+#:import utils kivy.utils
+#:import dp kivy.metrics.dp
+#:import sp kivy.metrics.sp
+
+<LoginScreen>:
+    name: "login"
+
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex("#6A0DAD")
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: [dp(30), dp(40), dp(30), dp(30)]
+        spacing: dp(16)
+
+        AnchorLayout:
+            size_hint_y: None
+            height: dp(100)
+            anchor_x: "center"
+            anchor_y: "center"
+            Image:
+                source: "assets/jaguar.png"
+                size_hint: None, None
+                size: dp(90), dp(90)
+                allow_stretch: True
+                keep_ratio: True
+
+        Label:
+            text: "Kaguar-ia"
+            font_size: sp(30)
+            bold: True
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(40)
+            halign: "center"
+            text_size: self.size
+
+        Label:
+            text: "Inicia sesion para continuar"
+            font_size: sp(13)
+            color: 0.8, 0.7, 1, 1
+            size_hint_y: None
+            height: dp(24)
+            halign: "center"
+            text_size: self.size
+
+        Widget:
+            size_hint_y: None
+            height: dp(10)
+
+        Label:
+            text: "Usuario"
+            font_size: sp(13)
+            color: 0.85, 0.75, 1, 1
+            size_hint_y: None
+            height: dp(20)
+            halign: "left"
+            text_size: self.size
+
+        TextInput:
+            id: txt_usuario
+            hint_text: "Tu nombre de usuario"
+            font_size: sp(15)
+            size_hint_y: None
+            height: dp(46)
+            background_color: utils.get_color_from_hex("#4A0080")
+            foreground_color: 1, 1, 1, 1
+            hint_text_color: 0.6, 0.5, 0.8, 1
+            cursor_color: 1, 1, 1, 1
+            padding: [dp(14), dp(12)]
+            multiline: False
+
+        Label:
+            text: "Contrasena"
+            font_size: sp(13)
+            color: 0.85, 0.75, 1, 1
+            size_hint_y: None
+            height: dp(20)
+            halign: "left"
+            text_size: self.size
+
+        TextInput:
+            id: txt_password
+            hint_text: "Tu contrasena"
+            font_size: sp(15)
+            size_hint_y: None
+            height: dp(46)
+            background_color: utils.get_color_from_hex("#4A0080")
+            foreground_color: 1, 1, 1, 1
+            hint_text_color: 0.6, 0.5, 0.8, 1
+            cursor_color: 1, 1, 1, 1
+            padding: [dp(14), dp(12)]
+            multiline: False
+            password: True
+
+        Label:
+            text: root.error_msg
+            font_size: sp(12)
+            color: 1, 0.4, 0.4, 1
+            size_hint_y: None
+            height: dp(20) if root.error_msg else dp(0)
+            opacity: 1 if root.error_msg else 0
+            halign: "center"
+            text_size: self.size
+
+        Widget:
+            size_hint_y: None
+            height: dp(8)
+
+        Button:
+            text: "Entrar"
+            font_size: sp(16)
+            bold: True
+            size_hint_y: None
+            height: dp(50)
+            background_normal: ""
+            background_color: 0, 0, 0, 0
+            color: 1, 1, 1, 1
+            on_release: root.do_login(txt_usuario.text, txt_password.text)
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex("#7B2FBE")
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(12)]
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: dp(36)
+            Label:
+                text: "No tienes cuenta?"
+                font_size: sp(13)
+                color: 0.8, 0.7, 1, 1
+                halign: "right"
+                text_size: self.size
+            Button:
+                text: "Registrate"
+                font_size: sp(13)
+                bold: True
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                color: 1, 0.85, 0.3, 1
+                on_release: root.go_register()
+
+        Widget:
+
+
+<RegisterScreen>:
+    name: "register"
+
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex("#6A0DAD")
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: [dp(30), dp(20), dp(30), dp(20)]
+        spacing: dp(10)
+
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: dp(44)
+            Button:
+                size_hint: None, None
+                size: dp(44), dp(44)
+                background_normal: ""
+                background_color: 0, 0, 0, 0
+                on_release: root.go_back()
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 0.12
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(10)]
+                Label:
+                    text: "<"
+                    font_size: sp(20)
+                    bold: True
+                    color: 1, 1, 1, 1
+                    pos: self.parent.pos
+                    size: self.parent.size
+                    halign: "center"
+                    valign: "middle"
+                    text_size: self.size
+            Label:
+                text: "Crear cuenta"
+                font_size: sp(20)
+                bold: True
+                color: 1, 1, 1, 1
+                halign: "center"
+                text_size: self.size
+            Widget:
+                size_hint_x: None
+                width: dp(44)
+
+        Widget:
+            size_hint_y: None
+            height: dp(6)
+
+        Label:
+            text: "Nombre"
+            font_size: sp(13)
+            color: 0.85, 0.75, 1, 1
+            size_hint_y: None
+            height: dp(18)
+            halign: "left"
+            text_size: self.size
+
+        TextInput:
+            id: txt_nombre
+            hint_text: "Tu nombre"
+            font_size: sp(15)
+            size_hint_y: None
+            height: dp(44)
+            background_color: utils.get_color_from_hex("#4A0080")
+            foreground_color: 1, 1, 1, 1
+            hint_text_color: 0.6, 0.5, 0.8, 1
+            cursor_color: 1, 1, 1, 1
+            padding: [dp(14), dp(10)]
+            multiline: False
+
+        Label:
+            text: "Apellido"
+            font_size: sp(13)
+            color: 0.85, 0.75, 1, 1
+            size_hint_y: None
+            height: dp(18)
+            halign: "left"
+            text_size: self.size
+
+        TextInput:
+            id: txt_apellido
+            hint_text: "Tu apellido"
+            font_size: sp(15)
+            size_hint_y: None
+            height: dp(44)
+            background_color: utils.get_color_from_hex("#4A0080")
+            foreground_color: 1, 1, 1, 1
+            hint_text_color: 0.6, 0.5, 0.8, 1
+            cursor_color: 1, 1, 1, 1
+            padding: [dp(14), dp(10)]
+            multiline: False
+
+        Label:
+            text: "Nombre de usuario"
+            font_size: sp(13)
+            color: 0.85, 0.75, 1, 1
+            size_hint_y: None
+            height: dp(18)
+            halign: "left"
+            text_size: self.size
+
+        TextInput:
+            id: txt_usuario
+            hint_text: "Ej: jaguar99"
+            font_size: sp(15)
+            size_hint_y: None
+            height: dp(44)
+            background_color: utils.get_color_from_hex("#4A0080")
+            foreground_color: 1, 1, 1, 1
+            hint_text_color: 0.6, 0.5, 0.8, 1
+            cursor_color: 1, 1, 1, 1
+            padding: [dp(14), dp(10)]
+            multiline: False
+
+        Label:
+            text: "Correo electronico"
+            font_size: sp(13)
+            color: 0.85, 0.75, 1, 1
+            size_hint_y: None
+            height: dp(18)
+            halign: "left"
+            text_size: self.size
+
+        TextInput:
+            id: txt_email
+            hint_text: "correo@ejemplo.com"
+            font_size: sp(15)
+            size_hint_y: None
+            height: dp(44)
+            background_color: utils.get_color_from_hex("#4A0080")
+            foreground_color: 1, 1, 1, 1
+            hint_text_color: 0.6, 0.5, 0.8, 1
+            cursor_color: 1, 1, 1, 1
+            padding: [dp(14), dp(10)]
+            multiline: False
+
+        Label:
+            text: "Edad"
+            font_size: sp(13)
+            color: 0.85, 0.75, 1, 1
+            size_hint_y: None
+            height: dp(18)
+            halign: "left"
+            text_size: self.size
+
+        TextInput:
+            id: txt_edad
+            hint_text: "Tu edad"
+            font_size: sp(15)
+            size_hint_y: None
+            height: dp(44)
+            background_color: utils.get_color_from_hex("#4A0080")
+            foreground_color: 1, 1, 1, 1
+            hint_text_color: 0.6, 0.5, 0.8, 1
+            cursor_color: 1, 1, 1, 1
+            padding: [dp(14), dp(10)]
+            multiline: False
+            input_filter: "int"
+
+        Label:
+            text: root.msg
+            font_size: sp(12)
+            color: (0.4, 1, 0.6, 1) if root.msg_ok else (1, 0.4, 0.4, 1)
+            size_hint_y: None
+            height: dp(20) if root.msg else dp(0)
+            opacity: 1 if root.msg else 0
+            halign: "center"
+            text_size: self.size
+
+        Widget:
+            size_hint_y: None
+            height: dp(6)
+
+        Button:
+            text: "Crear cuenta"
+            font_size: sp(16)
+            bold: True
+            size_hint_y: None
+            height: dp(50)
+            background_normal: ""
+            background_color: 0, 0, 0, 0
+            color: 1, 1, 1, 1
+            on_release: root.do_register(txt_nombre.text, txt_apellido.text, txt_usuario.text, txt_email.text, txt_edad.text)
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex("#7B2FBE")
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(12)]
+
+        Widget:
+            size_hint_y: None
+            height: dp(10)

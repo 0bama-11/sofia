@@ -1,5 +1,5 @@
 """
-CaloriasApp v2 — Punto de entrada principal.
+Kaguar-ia — Punto de entrada principal.
 """
 
 import os
@@ -19,22 +19,26 @@ from app.screens.capture import CaptureScreen
 from app.screens.result import ResultScreen
 from app.screens.history import HistoryScreen
 from app.screens.exercise import ExerciseScreen
+from app.screens.login import LoginScreen, RegisterScreen, init_users_table
 from app.database.db import init_db
 
 Window.size = (390, 750)
 
 KV_DIR = os.path.join(ROOT_DIR, "kv")
-for kv_file in ["home.kv", "capture.kv", "result.kv", "history.kv", "exercise.kv"]:
+for kv_file in ["login.kv", "home.kv", "capture.kv", "result.kv", "history.kv", "exercise.kv"]:
     Builder.load_file(os.path.join(KV_DIR, kv_file))
 
 
 class CaloriasApp(App):
-    title = "CaloriasApp"
+    title = "Kaguar-ia"
 
     def build(self):
         init_db()
+        init_users_table()
 
         sm = ScreenManager(transition=SlideTransition())
+        sm.add_widget(LoginScreen(name="login"))
+        sm.add_widget(RegisterScreen(name="register"))
         sm.add_widget(HomeScreen(name="home"))
         sm.add_widget(CaptureScreen(name="capture"))
         sm.add_widget(ResultScreen(name="result"))
