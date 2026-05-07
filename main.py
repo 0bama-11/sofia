@@ -19,7 +19,7 @@ from app.screens.capture import CaptureScreen
 from app.screens.result import ResultScreen
 from app.screens.history import HistoryScreen
 from app.screens.exercise import ExerciseScreen
-from app.screens.login import LoginScreen, RegisterScreen, init_users_table
+from app.screens.login import LoginScreen, RegisterScreen, ProfileSetupScreen, init_users_table
 from app.database.db import init_db
 
 Window.size = (390, 750)
@@ -39,6 +39,7 @@ class CaloriasApp(App):
         sm = ScreenManager(transition=SlideTransition())
         sm.add_widget(LoginScreen(name="login"))
         sm.add_widget(RegisterScreen(name="register"))
+        sm.add_widget(ProfileSetupScreen(name="profile_setup"))
         sm.add_widget(HomeScreen(name="home"))
         sm.add_widget(CaptureScreen(name="capture"))
         sm.add_widget(ResultScreen(name="result"))

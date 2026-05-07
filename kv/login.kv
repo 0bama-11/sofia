@@ -329,6 +329,52 @@
             halign: "center"
             text_size: self.size
 
+        Label:
+            text: "Contrasena"
+            font_size: sp(13)
+            color: 0.85, 0.75, 1, 1
+            size_hint_y: None
+            height: dp(18)
+            halign: "left"
+            text_size: self.size
+
+        TextInput:
+            id: txt_password_reg
+            hint_text: "Minimo 6 caracteres"
+            font_size: sp(15)
+            size_hint_y: None
+            height: dp(44)
+            background_color: utils.get_color_from_hex("#4A0080")
+            foreground_color: 1, 1, 1, 1
+            hint_text_color: 0.6, 0.5, 0.8, 1
+            cursor_color: 1, 1, 1, 1
+            padding: [dp(14), dp(10)]
+            multiline: False
+            password: True
+
+        Label:
+            text: "Confirmar contrasena"
+            font_size: sp(13)
+            color: 0.85, 0.75, 1, 1
+            size_hint_y: None
+            height: dp(18)
+            halign: "left"
+            text_size: self.size
+
+        TextInput:
+            id: txt_password_confirm
+            hint_text: "Repite tu contrasena"
+            font_size: sp(15)
+            size_hint_y: None
+            height: dp(44)
+            background_color: utils.get_color_from_hex("#4A0080")
+            foreground_color: 1, 1, 1, 1
+            hint_text_color: 0.6, 0.5, 0.8, 1
+            cursor_color: 1, 1, 1, 1
+            padding: [dp(14), dp(10)]
+            multiline: False
+            password: True
+
         Widget:
             size_hint_y: None
             height: dp(6)
@@ -342,7 +388,7 @@
             background_normal: ""
             background_color: 0, 0, 0, 0
             color: 1, 1, 1, 1
-            on_release: root.do_register(txt_nombre.text, txt_apellido.text, txt_usuario.text, txt_email.text, txt_edad.text)
+            on_release: root.do_register(txt_nombre.text, txt_apellido.text, txt_usuario.text, txt_email.text, txt_edad.text, txt_password_reg.text, txt_password_confirm.text)
             canvas.before:
                 Color:
                     rgba: utils.get_color_from_hex("#7B2FBE")
@@ -354,3 +400,143 @@
         Widget:
             size_hint_y: None
             height: dp(10)
+
+<ProfileSetupScreen>:
+    name: "profile_setup"
+
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex("#6A0DAD")
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: [dp(30), dp(50), dp(30), dp(30)]
+        spacing: dp(20)
+
+        AnchorLayout:
+            size_hint_y: None
+            height: dp(90)
+            anchor_x: "center"
+            anchor_y: "center"
+            Image:
+                source: "assets/jaguar.png"
+                size_hint: None, None
+                size: dp(80), dp(80)
+                allow_stretch: True
+                keep_ratio: True
+
+        Label:
+            text: "Un paso mas!"
+            font_size: sp(26)
+            bold: True
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(36)
+            halign: "center"
+            text_size: self.size
+
+        Label:
+            text: "Necesitamos tu datos fisicos\npara calcular mejor tus calorias"
+            font_size: sp(13)
+            color: 0.8, 0.7, 1, 1
+            size_hint_y: None
+            height: dp(44)
+            halign: "center"
+            text_size: self.size
+
+        Widget:
+            size_hint_y: None
+            height: dp(10)
+
+        Label:
+            text: "Altura (metros)"
+            font_size: sp(13)
+            color: 0.85, 0.75, 1, 1
+            size_hint_y: None
+            height: dp(20)
+            halign: "left"
+            text_size: self.size
+
+        TextInput:
+            id: txt_altura
+            hint_text: "Ej: 1.75"
+            font_size: sp(18)
+            size_hint_y: None
+            height: dp(56)
+            background_color: utils.get_color_from_hex("#4A0080")
+            foreground_color: 1, 1, 1, 1
+            hint_text_color: 0.6, 0.5, 0.8, 1
+            cursor_color: 1, 1, 1, 1
+            padding: [dp(14), dp(14)]
+            multiline: False
+            input_filter: "float"
+
+        Label:
+            text: "Peso (kg)"
+            font_size: sp(13)
+            color: 0.85, 0.75, 1, 1
+            size_hint_y: None
+            height: dp(20)
+            halign: "left"
+            text_size: self.size
+
+        TextInput:
+            id: txt_peso
+            hint_text: "Ej: 70"
+            font_size: sp(18)
+            size_hint_y: None
+            height: dp(56)
+            background_color: utils.get_color_from_hex("#4A0080")
+            foreground_color: 1, 1, 1, 1
+            hint_text_color: 0.6, 0.5, 0.8, 1
+            cursor_color: 1, 1, 1, 1
+            padding: [dp(14), dp(14)]
+            multiline: False
+            input_filter: "float"
+
+        Label:
+            text: root.msg
+            font_size: sp(12)
+            color: (0.4, 1, 0.6, 1) if root.msg_ok else (1, 0.4, 0.4, 1)
+            size_hint_y: None
+            height: dp(20) if root.msg else dp(0)
+            opacity: 1 if root.msg else 0
+            halign: "center"
+            text_size: self.size
+
+        Widget:
+            size_hint_y: None
+            height: dp(10)
+
+        Button:
+            text: "Guardar y continuar"
+            font_size: sp(16)
+            bold: True
+            size_hint_y: None
+            height: dp(52)
+            background_normal: ""
+            background_color: 0, 0, 0, 0
+            color: 1, 1, 1, 1
+            on_release: root.do_save(txt_altura.text, txt_peso.text)
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex("#7B2FBE")
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(12)]
+
+        Button:
+            text: "Omitir por ahora"
+            font_size: sp(13)
+            size_hint_y: None
+            height: dp(36)
+            background_normal: ""
+            background_color: 0, 0, 0, 0
+            color: 0.7, 0.7, 0.7, 1
+            on_release: root.go_skip()
+
+        Widget:
